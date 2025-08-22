@@ -1,0 +1,25 @@
+{
+  "nombre": "Farit",
+  "mensaje": "Hola, soy Farit\nsaludos desde Iquitos",
+  "descripcion": "Soy Economista y me dedico a proyectos.\nIncursionando en el mundo de la programacion.\nMe gusta aprender y compartir conocimientos.",
+  "edad": 49,
+  "decimal_altura": 1.73,
+  "permisos": 2586,
+  "color": "0xFET",
+  "isEcon": true,
+  "isEnabled": "on",
+  "hasData": null,
+  "cargos": ["Director de Estudios", "Jeje de OPMI", "Asesor de Proyectos"],
+  "usuarios": [
+    {
+      "nombre": "Farit",
+      "edad": 49
+    }
+  ],
+  "persona": {
+    "nombre": "Farit",
+    "edad": 49,
+    "ciudad": "Iquitos",
+    "isEconomista": true
+  }
+}

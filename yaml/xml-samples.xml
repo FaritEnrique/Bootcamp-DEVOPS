@@ -1,0 +1,32 @@
+<documento>
+  <nombre>Farit</nombre>
+  <mensaje>Hola, soy Farit
+saludos desde Iquitos</mensaje>
+  <descripcion>Soy Economista y me dedico a proyectos.
+Incursionando en el mundo de la programacion.
+Me gusta aprender y compartir conocimientos.</descripcion>
+  <edad>49</edad>
+  <decimal_altura>1.73</decimal_altura>
+  <permisos>2586</permisos>
+  <color>0xFET</color>
+  <isEcon>true</isEcon>
+  <isEnabled>on</isEnabled>
+  <hasData>null</hasData>
+  <cargos>
+    <cargo>Director de Estudios</cargo>
+    <cargo>Jeje de OPMI</cargo>
+    <cargo>Asesor de Proyectos</cargo>
+  </cargos>
+  <usuarios>
+    <usuario>
+      <nombre>Farit</nombre>
+      <edad>49</edad>
+    </usuario>
+  </usuarios>
+  <persona>
+    <nombre>Farit</nombre>
+    <edad>49</edad>
+    <ciudad>Iquitos</ciudad>
+    <isEconomista>true</isEconomista>
+  </persona>
+</documento>
