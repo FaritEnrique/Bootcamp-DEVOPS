@@ -1,0 +1,235 @@
+Pasos:
+
+1- Levnatar un contenedor con una imagen de ubuntu y que instalemos paquetes necesarios para los ejercicios
+
+    1.1- docker iniciar container:
+
+    docker run -dit --name ubuntu-playground ubuntu:latest
+
+    1.2- ingresar al container
+
+    docker exec -it ubuntu-playground bash
+
+
+    1.3 - informativo de paquetes extra:
+
+    vim, nano, less -> editores / visores de texto
+
+    man-db -> manuales
+    passwd -> nos permite gestionar passwords y cambiarlas
+    adduser-> nos permite agregar o crear usuarios de manera simple
+    procps-> ps, top, free, kill (para ver procesos y memoria)
+    net-tools-> ifconfig, netstat, route
+    iproute2-> ips a ips (herramientas de redes)
+    cron -> crontab(cronjobs)
+    findutils-> find, xargs (para la busqueda)
+    grep-> busqueda por contenido dentro de los archivos
+    util-linux -> lsblk, fdisk, mount, umount,etc (discos/particiones)
+    lsof -> archivos y sockets abiertos
+    tree -> me permite ver en estructura de arboles los directorios
+    plocate-> para buscar por indices
+    htop -> monitor interactivo de procesos.
+
+    comando para instalar:
+
+    apt-get update && apt-get install -y \
+    > vim nano less man-db \
+    > sudo passwd adduser \
+    > procps psmisc \
+    > net-tools iproute2 \
+    > cron \
+    > findutils grep coreutils \
+    > util-linux lsof tree ufw \
+    > plocate \
+    > htop
+
+
+2- Probar los comandos de ubuntu y detallar su uso.
+
+    Lista de comandos:
+
+
+    (*)Comandos simples para navegacion y visualizacion:
+
+    -> pwd
+    -> ls -l -la
+    -> mkdir
+    -> cd /ruta/
+    -> tree 
+
+    (*)usuarios:
+
+    whoami
+    id 
+    useradd luis --> crear mi usuario   /// pwd: fercdev1234  --> tienes que instalarlo y es mas amigable
+    passwd --> cambiamos password: ejemplo: passwd luis --> actualiza de manera rapida
+    su - luis --> teniendo en cuenta que luis es mi usuario, me permite loguearme
+    adduser--> nativo- viene dentro existe permite la creacion de usuarios, pero es mas complejo, poco amigable
+
+    (*) busqueda de archivos
+    find / --> buscar por nombre
+    locate archivo  --> buscar un archivo y sirve con el paquete mlocate
+    which --> ruta 
+    whereis ls --> busca los binarios
+
+    (*) archivos y su contenido 
+    touch archivo.txt -> creo mi archivo en blanco
+    nano archivo.txt --> edita el nuevo archivo --> CTRL + O (para guardar) y CTRL + X (para solo salir)
+    cat archivo.txt --> muestra el contenido de mi archivo
+    less archivo.txt --> muestra por paginado
+    head -n 2 archivo.txt --> muestra primeras 2 lineas
+    tail -f archivo.txt --> ultimas lineas en tiempo real   (OJO ES DE LOS MAS USADOS)
+    echo "texto" --> para crear contenido (echo "texto" > archivo.txt) 
+        para agregar segunda linea (echo "segunda linea" >> archivo.txt)
+        para printear log de algun proceso (echo "informativo de progreso")
+
+
+    grep "textoPreciso" arhicoDondeSeBusca.txt --> hace la busqueda de la coicidencia
+    grep -r "textoDeBusqueda" /var/www/ruta --> hace un busqueda de manera recursiva
+
+    (*) revision de procesos
+    top --> monitor de procesos
+    htop --> monitor mas amigable de visualizacion de procesos
+    sleep 1000 & --> comando para enviar un proceso en segundo plano, palabra clave del comando sleep
+    ps aux | grep sleep --> buscamos el proceso por la palabra clave "sleep"
+
+    pkill sleep --> elimina el proceso con la palabra clave sleep
+    kill 5145 --> elimina el proceso por el ID identificador PID
+
+    (*) procesos cronjob 
+    service cron start --> para iniciarlizar el proceso de cron 
+    crontab -l  --> verificar crons en ejecucion
+    echo "* * * * * date >> /tmp/cron.log" | crontab -   --> para crear un cronjob
+    ps aux | grep cron   --> para verificar el proceso cron en ejecucion
+    crontab -e --> para editar los cronjobs en ejecucion y removerlos o actualizarlos
+    crontab -r --> para eliminar todos los cronjobs en ejecucion del usuario
+    service cron stop --> para detener el proceso cron (Una vez que ya no lo necesite)
+
+    (*) permisos y propiedad de carpetas
+
+    CHMOD ---
+
+    x= execute
+    r= read
+    w= write
+
+    Entender el peso de cada privilegio
+    1- OCTAL 
+        r=4
+        w=2
+        x=1
+    ----------------------------------------
+        rwx= 4 + 2 + 1 = 7
+        rw-= 4 + 2 + 0 = 6
+        r-x= 4 + 0 + 1 = 5
+        r--= 4 + 0 + 0 = 4
+        --x= 0 + 0 + 1 = 1
+        ---= 0 + 0 + 0 = 0
+    ---------------------------------------------
+    chmod 750 archivo.txt
+
+    7--> bloque 1 corresponde al USUARIO
+    5--> bloque 2 corresponde al GRUPO
+    0--> bloque 3 corresponde al OTRO
+
+    -------------------------------------
+    2- SIMBOLICA
+    - u=user(owner), g=group, o=others, a=all
+    ejemplos:
+    (+) significa agregar permisos
+    chmod u+x script.sh --> le doy el privilegio de ejecutar al owner
+    chmod g+w archivo.txt --> le doy el privilegio de escribir al grupo
+    (-) remover permisos
+    chmod o-r archivo.txt --> remuevo el permiso de lectura
+
+    chmod u=rw, g=r,o= archivo.txt --> usuario u owner tiene lectura y escritura. Grupo solo tiene lectura y otros no tiene 
+                                    nada de permisos
+    chmod a+rw carpeta/     --> todos pueden leer y editar (usar con precausion)
+
+
+    CHOWN ---
+    cambiar de propietario o grupo 
+
+    chown user archivo.txt
+    chown user1:group1 archivo.txt
+    chown :group2 archivo.txt
+    chown -R usuario:grupo carpeta/
+
+    util: getent group devs --> para validar la existencia del grupo
+    util: groupadd devs --> para crear el grupo
+    util: getent group devs2 || groupadd devs2 --> para validar la existencia y crear en caso no exista
+
+
+
+
+    (*) gestion de discos:
+    lsblk --> para visualizar los discos y sus particiones
+    fdisk -l  --> muestra una tabla detallada de discos
+    parted -l --> alternativa moderna para ver particiones 
+
+    df -h --> para ver el espacio de cada particion montada
+
+    du -sh /app/www/file.txt    --> para ver el espacio que ocupa un directorio o archivos
+    du -sh /app/www/*
+
+    lsblk -f --> para ver informacion detallada de discos orientado al filesystem type
+
+
+2.5- Comamdos para crear mi imagen custom de DOCKER 
+
+    Pasos 
+    1- Crear un archivo Dockerfile // DockerFile
+    2- Construir la imagen gracias al archivo "Dockerfile"
+        -> comando a utilizar:
+            docker build -t ubuntu-playground-image .      || (Nota:) El comando debe de usarse en la ruta de la carpeta donde se encuentra el Dockerfile
+    
+    3- Validar la construccion de la imagen:
+        -> comando a utilizar:
+            docker images               || (Nota:) Debe figurar el nombre de la imagen que se le ha dado en este caso "ubuntu-playground-image" 
+
+    4- Levantar un nuevo contenedor con la imagen previamente construida:
+
+        4.1 - En caso el contenedor con el nombre "ubuntu-playground" ya exista debemos de eliminarlo y recrearlo
+            4.1.1 - docker ps -a    \\ Lista todos los contenedores con sus estados
+            4.1.2 - Identifico el ID y procedo a eliminarlo docker rm "id...."   // ejemplo: docker rm ab5b418fd9e7
+
+        4.2 - Comando para crear nuevo contenedor con mi imagen construida:
+            docker run -dit --name ubuntu-playground ubuntu-playground-image:latest
+    5- Conectarse a un contenedor en ejecucion:
+        5.1- Ejecutar el comando para ingresar a la bash o terminal del contenedor de ubuntu:
+
+            docker exec -it ubuntu-playground bash
+
+
+
+3- Comandos para redes.
+    -> ip a --> nos mostraba las interfaces de red dentro del servidor de linux
+    -> ip a | grep inet --> mostraba las ips asignadas
+
+    hostname -I --> visualiza direccion ip asignada
+
+    ss --> comando para ver todas las conexiones activas 
+
+    ss -tuln --> muestra conexiones activas teniendo en cuenta
+                -> -t : protocolo TCP
+                -> -u : protocolo UDP
+                -> -l : los puertos que estan en escucha
+                -> -n : muestra los ips y puertos de manera numerica 
+
+    netstat -tuln --> similar comportamiento que "ss" pero requiere el paquete "net-tools"
+
+
+
+    ufw enable  --> luego de instalar el paquete UFW necesitamos habilitarlo
+
+    habilitar puertos: 
+    ufw allow 80/tcp --> habilita el puerto 80  (http)
+    ufw allow 443/tcp --> habilita puerto 443 (https)
+    ufw allow 8080/tcp --> puerto habilitado 8080 para otro aplicativo
+
+    ufw deny 22/ssh --> deniega el acceso al puerto 22
+    ufw status --> estado de tus puertos 
+    ufw status verbose --> estado detallado
+    ufw app list --> listar las reglas que han habilitado por perfil
+
+    ufw disable --> deshabilitar el firewall 
